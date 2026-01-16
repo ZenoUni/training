@@ -9,33 +9,6 @@
         <string name="recap">Recap</string>
 
     <!-- Attività -->
-        <string name="select_workout">Scegli un allenamento ...</string>
-        <string name="dropdown">Apri menù a tendina</string>
         <string name="today_date_placeholder">Oggi</string>
-        <string name="corsa">Corsa</string>
-        <string name="pugilato">Pugilato</string>
-        <string name="bicipiti_tricipiti">Bicipiti e Tricipiti</string>
-        <string name="petto_spalle">Petto e Spalle</string>
-
-    <!-- Schede -->
-        <string name="le_tue_schede">Le tue Schede</string>
-        <string name="applica_modifiche">Applica Modifiche</string>
-        <string name="annulla_tutto">Annulla Tutto</string>
-
-    <!-- Scheda petto e spalle -->
-        <string name="es_petto_1">Floor dumbbell 4x15</string>
-        <string name="es_petto_2">Push up 4x15</string>
-        <string name="es_petto_3">Dumbbell overhead 4x12</string>
-        <string name="es_petto_4">Alzate laterali 4x12</string>
-        <string name="es_petto_5">Dumbbell fly 3x15</string>
-        <string name="es_petto_6">Pike push up 3x15</string>
-
-    <!-- Braccia -->
-        <string name="es_braccia_1">Curl alternato 4x10</string>
-        <string name="es_braccia_2">Estensioni tricipiti sopra la testa 3x12</string>
-        <string name="es_braccia_3">Hammer curl 3x12</string>
-        <string name="es_braccia_4">Push up presa stretta 3x10</string>
-        <string name="es_braccia_5">Concentration curl 3x10</string>
-        <string name="es_braccia_6">Skullcrusher con manubri 3x10</string>
 
 </resources>
