@@ -6,18 +6,102 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Contenuto centrale Obiettivi -->
+    <!-- TITOLO -->
     <TextView
-        android:id="@+id/central_text"
+        android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/schede"
+        android:text="@string/le_tue_schede"
         android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/date_top_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- FORM: ora include down_arrow a destra -->
+    <LinearLayout
+        android:id="@+id/form_action"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/form_padding_horizontal"
+        android:paddingEnd="@dimen/form_padding_horizontal"
+        android:paddingTop="@dimen/form_padding_vertical"
+        android:paddingBottom="@dimen/form_padding_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/bg_form_action"
+        app:layout_constraintTop_toBottomOf="@id/title_text"
+        android:layout_marginTop="@dimen/form_top_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/form_side_margin"
+        android:layout_marginEnd="@dimen/form_side_margin">
+
+        <!-- Icona selezione -->
+        <ImageView
+            android:id="@+id/action_icon"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/occhio"
+            android:contentDescription="@string/desc_action_icon"/>
+
+        <!-- Testo selezione -->
+        <TextView
+            android:id="@+id/action_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/text_margin_left"
+            android:layout_marginEnd="@dimen/text_margin_right"
+            android:text="@string/azione_visualizza"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/black"/>
+
+        <!-- Freccetta destra -->
+        <ImageView
+            android:id="@+id/action_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/down_arrow"
+            android:contentDescription="@string/desc_down_arrow"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="@dimen/form_arrow_margin"/>
+    </LinearLayout>
+
+    <!-- Area scroll schede -->
+    <ScrollView
+        android:id="@+id/schede_scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/form_action"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/content_top_margin"
+        android:layout_marginBottom="@dimen/content_bottom_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/empty_state_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_schede"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size"
+                android:layout_marginTop="@dimen/empty_state_margin_top"/>
+        </LinearLayout>
+    </ScrollView>
 
     <!-- Barra di navigazione inferiore -->
     <include
@@ -29,6 +113,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

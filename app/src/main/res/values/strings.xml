@@ -11,4 +11,17 @@
     <!-- Attività -->
         <string name="today_date_placeholder">Oggi</string>
 
+    <!-- Schede -->
+        <string name="le_tue_schede">Le Tue Schede</string>
+        <string name="azione_visualizza">Visualizza tutto</string>
+        <string name="azione_modifica">Modifica scheda</string>
+        <string name="azione_crea">Crea scheda</string>
+        <string name="azione_elimina">Elimina scheda</string>
+        <string name="desc_action_icon">Icona azione</string>
+        <string name="desc_down_arrow">Apri menu azioni</string>
+        <string name="desc_item_icon">Icona opzione</string>
+        <string name="no_schede">Non hai ancora schede salvate</string>
+
+
+
 </resources>

@@ -14,8 +14,18 @@
         <dimen name="text_size_large">28sp</dimen>
         <dimen name="date_top_margin">48dp</dimen>
 
-
-
+    <!-- Schede -->
+        <dimen name="form_top_margin">16dp</dimen>
+        <dimen name="form_padding_horizontal">16dp</dimen>
+        <dimen name="form_padding_vertical">12dp</dimen>
+        <dimen name="text_margin_left">12dp</dimen>
+        <dimen name="text_margin_right">8dp</dimen>
+        <dimen name="side_margin">16dp</dimen>
+        <dimen name="content_top_margin">16dp</dimen>
+        <dimen name="content_bottom_margin">16dp</dimen>
+        <dimen name="empty_state_margin_top">24dp</dimen>
+        <dimen name="form_side_margin">16dp</dimen>
+        <dimen name="form_arrow_margin">8dp</dimen>
 
 
 
