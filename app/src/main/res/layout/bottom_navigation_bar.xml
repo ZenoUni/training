@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_navigation"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/bottom_nav_height"
+    android:orientation="horizontal"
+    android:background="@color/light_gray"
+    android:paddingTop="@dimen/padding_button"
+    android:paddingBottom="@dimen/padding_button"
+
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginBottom="@dimen/bottom_nav_margin">
+
+    <!-- Obiettivi -->
+    <LinearLayout
+        android:id="@+id/nav_obiettivi"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/icon_obiettivi"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/bersaglio"
+            app:tint="@color/gray"/>
+        <TextView
+            android:id="@+id/text_obiettivi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/obiettivi"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size"
+            android:layout_marginTop="@dimen/text_margin_top"
+            android:layout_marginBottom="@dimen/text_margin_bottom"/>
+    </LinearLayout>
+
+    <!-- Schede -->
+    <LinearLayout
+        android:id="@+id/nav_schede"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/icon_schede"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/foglio"
+            app:tint="@color/gray"/>
+        <TextView
+            android:id="@+id/text_schede"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/schede"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size"
+            android:layout_marginTop="@dimen/text_margin_top"
+            android:layout_marginBottom="@dimen/text_margin_bottom"/>
+    </LinearLayout>
+
+    <!-- Attività (centrale) -->
+    <LinearLayout
+        android:id="@+id/nav_attivita"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/icon_attivita"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/fulmine"
+            app:tint="@color/black"/>
+        <TextView
+            android:id="@+id/text_attivita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/attivita"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"
+            android:layout_marginTop="@dimen/text_margin_top"
+            android:layout_marginBottom="@dimen/text_margin_bottom"/>
+    </LinearLayout>
+
+    <!-- Progressi -->
+    <LinearLayout
+        android:id="@+id/nav_progressi"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/icon_progressi"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/istogramma"
+            app:tint="@color/gray"/>
+        <TextView
+            android:id="@+id/text_progressi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/progressi"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size"
+            android:layout_marginTop="@dimen/text_margin_top"
+            android:layout_marginBottom="@dimen/text_margin_bottom"/>
+    </LinearLayout>
+
+    <!-- Recap -->
+    <LinearLayout
+        android:id="@+id/nav_recap"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/icon_recap"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/recap"
+            app:tint="@color/gray"/>
+        <TextView
+            android:id="@+id/text_recap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recap"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size"
+            android:layout_marginTop="@dimen/text_margin_top"
+            android:layout_marginBottom="@dimen/text_margin_bottom"/>
+    </LinearLayout>
+
+</LinearLayout>
