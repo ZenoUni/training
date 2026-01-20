@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- FORM: ora include down_arrow a destra -->
+    <!-- FORM: include down_arrow a destra -->
     <LinearLayout
         android:id="@+id/form_action"
         android:layout_width="0dp"
@@ -87,10 +87,11 @@
         android:layout_marginBottom="@dimen/content_bottom_margin">
 
         <LinearLayout
+            android:id="@+id/schede_list_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:padding="@dimen/content_padding">
 
             <TextView
                 android:id="@+id/empty_state_text"
@@ -99,9 +100,12 @@
                 android:text="@string/no_schede"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/text_size"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/empty_state_margin_top"/>
+
         </LinearLayout>
     </ScrollView>
+
 
     <!-- Barra di navigazione inferiore -->
     <include

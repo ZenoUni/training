@@ -1,26 +1,40 @@
 <resources>
 
     <!-- navbar -->
-        <string name="app_name">Training</string>
-        <string name="obiettivi">Obiettivi</string>
-        <string name="schede">Schede</string>
-        <string name="attivita">Attività</string>
-        <string name="progressi">Progressi</string>
-        <string name="recap">Recap</string>
+    <string name="app_name">Training</string>
+    <string name="obiettivi">Obiettivi</string>
+    <string name="schede">Schede</string>
+    <string name="attivita">Attività</string>
+    <string name="progressi">Progressi</string>
+    <string name="recap">Recap</string>
 
     <!-- Attività -->
-        <string name="today_date_placeholder">Oggi</string>
+    <string name="today_date_placeholder">Oggi</string>
 
     <!-- Schede -->
-        <string name="le_tue_schede">Le Tue Schede</string>
-        <string name="azione_visualizza">Visualizza tutto</string>
-        <string name="azione_modifica">Modifica scheda</string>
-        <string name="azione_crea">Crea scheda</string>
-        <string name="azione_elimina">Elimina scheda</string>
-        <string name="desc_action_icon">Icona azione</string>
-        <string name="desc_down_arrow">Apri menu azioni</string>
-        <string name="desc_item_icon">Icona opzione</string>
-        <string name="no_schede">Non hai ancora schede salvate</string>
+    <string name="le_tue_schede">Le Tue Schede</string>
+    <string name="azione_visualizza">Visualizza tutto</string>
+    <string name="azione_modifica">Modifica scheda</string>
+    <string name="azione_crea">Crea scheda</string>
+    <string name="azione_elimina">Elimina scheda</string>
+    <string name="desc_action_icon">Icona azione</string>
+    <string name="desc_down_arrow">Apri menu azioni</string>
+    <string name="desc_item_icon">Icona opzione</string>
+    <string name="no_schede">Non hai ancora schede salvate</string>
+
+    <string name="crea_scheda_title">Crea Scheda</string>
+    <string name="nome_scheda_label">Nome scheda</string>
+    <string name="nome_scheda_hint">Inserisci il nome della scheda</string>
+    <string name="esercizi_label">Esercizi</string>
+    <string name="esercizi_hint">Inserisci gli esercizi (una riga per esercizio o vai a capo)</string>
+    <string name="salva">Salva</string>
+    <string name="annulla">Annulla</string>
+    <string name="conferma_annulla">Sicuro di voler annullare la creazione?</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="compila_tutti_campi">Compila prima tutti i campi indicati</string>
+    <string name="scheda_salvata">Scheda salvata con successo</string>
+    <string name="non_implementato_ancora">Funzionalità non implementata ancora</string>
 
 
 

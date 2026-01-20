@@ -26,6 +26,21 @@
         <dimen name="empty_state_margin_top">24dp</dimen>
         <dimen name="form_side_margin">16dp</dimen>
         <dimen name="form_arrow_margin">8dp</dimen>
+        <dimen name="content_padding">8dp</dimen>
+
+    <!-- fragment create -->
+        <dimen name="fragment_padding">16dp</dimen>
+        <dimen name="fragment_title_padding">8dp</dimen>
+        <dimen name="label_margin_top">12dp</dimen>
+        <dimen name="edittext_padding">12dp</dimen>
+        <dimen name="fragment_button_margin">16dp</dimen>
+        <dimen name="button_space">8dp</dimen>
+
+    <!-- item scheda -->
+        <dimen name="item_scheda_padding">16dp</dimen>
+        <dimen name="item_scheda_margin_bottom">12dp</dimen>
+        <dimen name="item_title_margin">8dp</dimen>
+
 
 
 

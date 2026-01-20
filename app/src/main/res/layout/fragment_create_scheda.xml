@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/fragment_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Titolo fragment -->
+        <TextView
+            android:id="@+id/create_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/crea_scheda_title"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="@dimen/fragment_title_padding"/>
+
+        <!-- Nome scheda -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nome_scheda_label"
+            android:layout_marginTop="@dimen/label_margin_top"/>
+
+        <EditText
+            android:id="@+id/input_nome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nome_scheda_hint"
+            android:inputType="textPersonName"
+            android:background="@drawable/edittext_bg"
+            android:padding="@dimen/edittext_padding"/>
+
+        <!-- Esercizi (multilinea) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/esercizi_label"
+            android:layout_marginTop="@dimen/label_margin_top"/>
+
+        <EditText
+            android:id="@+id/input_esercizi"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="top"
+            android:hint="@string/esercizi_hint"
+            android:inputType="textMultiLine"
+            android:background="@drawable/edittext_bg"
+            android:padding="@dimen/edittext_padding"
+            android:scrollbars="vertical"/>
+
+        <!-- Bottoni in basso -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/fragment_button_margin">
+
+            <Button
+                android:id="@+id/btn_salva"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/salva"
+                android:textAllCaps="false"
+                android:backgroundTint="@color/green"
+                android:textColor="@color/white"
+                android:layout_marginEnd="@dimen/button_space"/>
+
+            <Button
+                android:id="@+id/btn_annulla"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/annulla"
+                android:textAllCaps="false"
+                android:backgroundTint="@color/red"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/button_space"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
