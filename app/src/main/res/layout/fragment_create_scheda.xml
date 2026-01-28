@@ -46,7 +46,7 @@
         <EditText
             android:id="@+id/input_esercizi"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/exercise_height"
             android:gravity="top"
             android:hint="@string/esercizi_hint"
             android:inputType="textMultiLine"

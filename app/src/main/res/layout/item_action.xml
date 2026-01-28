@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/item_action_height"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    android:paddingStart="@dimen/item_scheda_padding"
+    android:paddingEnd="@dimen/item_scheda_padding">
 
     <ImageView
         android:id="@+id/item_icon"

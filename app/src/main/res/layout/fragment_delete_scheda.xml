@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/fragment_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Intestazione -->
+        <TextView
+            android:id="@+id/delete_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/elimina_scheda_title"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="@dimen/fragment_title_padding" />
+
+        <!-- FORM selezione (cliccabile) -->
+        <LinearLayout
+            android:id="@+id/delete_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="@dimen/form_padding_vertical"
+            android:background="@drawable/bg_form_action"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/delete_select_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/seleziona_scheda_eliminare"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/black"
+                android:paddingStart="@dimen/form_padding_horizontal"
+                android:paddingEnd="@dimen/form_padding_horizontal"/>
+
+            <ImageView
+                android:id="@+id/delete_select_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/down_arrow"
+                android:contentDescription="@string/desc_down_arrow"
+                android:paddingEnd="@dimen/form_arrow_margin"/>
+        </LinearLayout>
+
+        <!-- Spazio tra form e preview -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <!-- Preview della scheda selezionata -->
+        <LinearLayout
+            android:id="@+id/delete_preview_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/content_padding"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:background="@android:color/transparent">
+
+            <!-- bordo nero -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"/>
+
+            <TextView
+                android:id="@+id/delete_preview_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_large"
+                android:textColor="@color/black"
+                android:layout_marginTop="12dp"/>
+
+            <TextView
+                android:id="@+id/delete_preview_esercizi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin_top"
+                android:textColor="@color/black"/>
+
+            <!-- bordo inferiore -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_marginTop="12dp"/>
+        </LinearLayout>
+
+
+        <!-- Bottoni -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/fragment_button_margin">
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/elimina"
+                android:textAllCaps="false"
+                android:backgroundTint="@color/red"
+                android:textColor="@color/white"
+                android:layout_marginEnd="@dimen/button_space"/>
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/annulla"
+                android:textAllCaps="false"
+                android:backgroundTint="@color/yellow"
+                android:textColor="@color/black"
+                android:layout_marginStart="@dimen/button_space"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

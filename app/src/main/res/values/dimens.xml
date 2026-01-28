@@ -1,12 +1,12 @@
 <resources>
 
     <!-- navbar -->
-        <dimen name="bottom_nav_height">100dp</dimen>
+        <dimen name="bottom_nav_height">84dp</dimen>
         <dimen name="icon_size">30dp</dimen>
         <dimen name="text_margin_top">3dp</dimen>
         <dimen name="text_margin_bottom">3dp</dimen>
         <dimen name="text_size">12sp</dimen>
-        <dimen name="bottom_nav_margin">42dp</dimen>
+        <dimen name="bottom_nav_margin">15dp</dimen>
         <dimen name="padding_button">4dp</dimen>
 
     <!-- Attività -->
@@ -35,11 +35,15 @@
         <dimen name="edittext_padding">12dp</dimen>
         <dimen name="fragment_button_margin">16dp</dimen>
         <dimen name="button_space">8dp</dimen>
+        <dimen name="exercise_height">200dp</dimen>
 
     <!-- item scheda -->
         <dimen name="item_scheda_padding">16dp</dimen>
         <dimen name="item_scheda_margin_bottom">12dp</dimen>
         <dimen name="item_title_margin">8dp</dimen>
+
+    <!-- item action -->
+    <dimen name="item_action_height">48dp</dimen>
 
 
 

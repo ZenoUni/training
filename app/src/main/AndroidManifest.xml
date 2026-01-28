@@ -13,25 +13,25 @@
         android:theme="@style/Theme.Training"
         tools:targetApi="31">
         <activity
-            android:name=".BaseActivity"
+            android:name=".ui.base.BaseActivity"
             android:exported="false" />
         <activity
-            android:name=".RecapActivity"
+            android:name=".ui.activities.RecapActivity"
             android:exported="false" />
         <activity
-            android:name=".ProgressiActivity"
+            android:name=".ui.activities.ProgressiActivity"
             android:exported="false" />
         <activity
-            android:name=".AttivitaActivity"
+            android:name=".ui.activities.AttivitaActivity"
             android:exported="false" />
         <activity
-            android:name=".SchedeActivity"
+            android:name=".ui.activities.SchedeActivity"
             android:exported="false" />
         <activity
-            android:name=".ObiettiviActivity"
+            android:name=".ui.activities.ObiettiviActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.App.Splash">
             <intent-filter>

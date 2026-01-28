@@ -17,11 +17,11 @@
     <string name="azione_modifica">Modifica scheda</string>
     <string name="azione_crea">Crea scheda</string>
     <string name="azione_elimina">Elimina scheda</string>
+    <string name="elimina">Elimina</string>
     <string name="desc_action_icon">Icona azione</string>
     <string name="desc_down_arrow">Apri menu azioni</string>
     <string name="desc_item_icon">Icona opzione</string>
     <string name="no_schede">Non hai ancora schede salvate</string>
-
     <string name="crea_scheda_title">Crea Scheda</string>
     <string name="nome_scheda_label">Nome scheda</string>
     <string name="nome_scheda_hint">Inserisci il nome della scheda</string>
@@ -35,6 +35,18 @@
     <string name="compila_tutti_campi">Compila prima tutti i campi indicati</string>
     <string name="scheda_salvata">Scheda salvata con successo</string>
     <string name="non_implementato_ancora">Funzionalità non implementata ancora</string>
+    <string name="elimina_scheda_title">Elimina scheda</string>
+    <string name="seleziona_scheda_eliminare">Seleziona la scheda da eliminare</string>
+    <string name="confirm_delete_scheda">Sicuro di voler eliminare la scheda %1$s?</string>
+    <string name="scheda_eliminata">Scheda eliminata</string>
+    <string name="seleziona_prima_una_scheda">Seleziona prima una scheda</string>
+    <string name="modifica_scheda_title">Modifica scheda</string>
+    <string name="seleziona_scheda_modificare">Seleziona la scheda da modificare</string>
+    <string name="tutte_modifiche_annullate">Tutte le modifiche apportate verranno annullate</string>
+    <string name="confirm_save_modifiche">Sicuro di voler salvare le modifiche?</string>
+    <string name="modifiche_salvate">Modifiche salvate</string>
+    <string name="ok">Ok</string>
+
 
 
 
