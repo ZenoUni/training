@@ -10,6 +10,26 @@
 
     <!-- Attività -->
     <string name="today_date_placeholder">Oggi</string>
+    <string name="inizia_allenamento">Inizia il tuo allenamento 🔥</string>
+    <string name="corsa">Corsa</string>
+    <string name="pugilato">Pugilato</string>
+    <string name="avvia">Avvia</string>
+    <string name="fine">Fine</string>
+    <string name="allenamento_in_corso">Hai già un allenamento in corso</string>
+    <string name="seleziona_prima_un_allenamento">Seleziona prima un allenamento</string>
+    <string name="pausa">PAUSA</string>
+    <string name="riprendi">RIPRENDI</string>
+    <string name="lock_desc">Blocca/abilita comandi</string>
+    <string name="unlock_desc">Sblocca comandi</string>
+    <string name="unlock_required">Tocca il lucchetto per abilitare i comandi</string>
+    <string name="hai_gia_finito">Hai già finito?</string>
+    <string name="popup_fine_anticipata">
+    Forse sei a corto di tempo oggi.
+    Vuoi salvare o eliminare il tuo allenamento dallo storico?
+    </string>
+    <string name="no_elimina">NO, Elimina</string>
+    <string name="si_salva">SI, Salva</string>
+
 
     <!-- Schede -->
     <string name="le_tue_schede">Le Tue Schede</string>

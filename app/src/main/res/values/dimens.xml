@@ -12,7 +12,9 @@
     <!-- Attività -->
 
         <dimen name="text_size_large">28sp</dimen>
-        <dimen name="date_top_margin">48dp</dimen>
+        <dimen name="date_top_margin">100dp</dimen>
+        <dimen name="button_height">56dp</dimen>      <!-- altezza uniforme dei pulsanti -->
+
 
     <!-- Schede -->
         <dimen name="form_top_margin">16dp</dimen>
