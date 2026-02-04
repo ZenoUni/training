@@ -1,5 +1,6 @@
 package com.example.training.ui.activities
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,6 +10,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.training.R
 import com.example.training.data.Scheda
@@ -104,14 +106,41 @@ class AttivitaActivity : AppCompatActivity() {
         btnUnlock = findViewById(R.id.btn_unlock)
         btnFine2 = findViewById(R.id.btn_fine_2)
 
-        btnAvvia.setBgColor(R.color.button_green)
-        btnPausa.setBgColor(R.color.button_yellow)
-        btnFine1.setBgColor(R.color.button_red)
-        btnRiprendi.setBgColor(R.color.button_green)
-        btnFine2.setBgColor(R.color.button_red)
-        btnLock.setBgColor(R.color.button_dark_gray)
-        btnUnlock.setBgColor(R.color.button_light_gray)
+        // ---------------------------
+        // Forza background e rimuove tint del tema (fix definitivo per il "viola")
+        // ---------------------------
+        // Assicuriamoci di usare i drawable shape che hai creato e di cancellare
+        // qualunque backgroundTint che il tema (o AppCompat) possa aver applicato.
+        fun forceBgAndClearTint(button: Button, drawableRes: Int) {
+            // imposta il drawable come background (questo imposta il shape)
+            button.background = ContextCompat.getDrawable(this, drawableRes)
+            // rimuove qualunque tint applicato a runtime dal tema
+            button.backgroundTintList = null
+            // assicura che il testo sia bianco (nel caso il tema riavviasse qualcosa)
+            button.setTextColor(ContextCompat.getColor(this, R.color.white))
+        }
 
+        // Applichiamo ai bottoni principali
+        forceBgAndClearTint(btnAvvia, R.drawable.bg_button_green)
+        forceBgAndClearTint(btnPausa, R.drawable.bg_button_yellow)
+        forceBgAndClearTint(btnFine1, R.drawable.bg_button_red)
+        forceBgAndClearTint(btnRiprendi, R.drawable.bg_button_green)
+        forceBgAndClearTint(btnFine2, R.drawable.bg_button_red)
+
+        // Per gli ImageButton (lucchetto) manteniamo drawable e tint espliciti:
+        btnLock.background = ContextCompat.getDrawable(this, R.drawable.bg_lock_rect)
+        btnLock.backgroundTintList = ContextCompat.getColorStateList(this, R.color.dark_gray)
+        btnUnlock.background = ContextCompat.getDrawable(this, R.drawable.bg_lock_rect)
+        btnUnlock.backgroundTintList = ContextCompat.getColorStateList(this, R.color.light_gray)
+        // ---------------------------
+
+        // Stato iniziale coerente:
+        // Avvia deve essere cliccabile se visibile; pausa/fine devono partire disabilitati
+        btnAvvia.isEnabled = true
+        btnPausa.isEnabled = false
+        btnFine1.isEnabled = false
+        btnRiprendi.isEnabled = true   // riprendi verrà mostrato solo se lo stato è paused
+        btnFine2.isEnabled = false
 
         // default label
         startText.text = getString(R.string.inizia_allenamento)
@@ -235,15 +264,6 @@ class AttivitaActivity : AppCompatActivity() {
         handler.removeCallbacks(uiRunnable)
     }
 
-    private fun Button.setBgColor(colorRes: Int) {
-        background.mutate().setTint(getColor(colorRes))
-    }
-
-    private fun ImageButton.setBgColor(colorRes: Int) {
-        background.mutate().setTint(getColor(colorRes))
-    }
-
-
     private fun handleFinishTraining() {
         val start = viewModel.trainingStart.value ?: return
         val elapsed = System.currentTimeMillis() - start
@@ -281,34 +301,37 @@ class AttivitaActivity : AppCompatActivity() {
     private fun updateUiForTrainingState(active: Boolean, paused: Boolean) {
 
         fun showOnly(view: View) {
+            // nascondi tutto e azzera pesi
             btnAvvia.visibility = View.GONE
             setRunningLocked.visibility = View.GONE
             setPaused.visibility = View.GONE
 
-            btnAvvia.layoutParams = (btnAvvia.layoutParams as LinearLayout.LayoutParams).apply {
-                weight = 0f
-            }
-            setRunningLocked.layoutParams = (setRunningLocked.layoutParams as LinearLayout.LayoutParams).apply {
-                weight = 0f
-            }
-            setPaused.layoutParams = (setPaused.layoutParams as LinearLayout.LayoutParams).apply {
-                weight = 0f
-            }
+            (btnAvvia.layoutParams as LinearLayout.LayoutParams).apply { weight = 0f }
+            (setRunningLocked.layoutParams as LinearLayout.LayoutParams).apply { weight = 0f }
+            (setPaused.layoutParams as LinearLayout.LayoutParams).apply { weight = 0f }
 
+            // mostra quello selezionato; assegna peso 2 se è AVVIA, altrimenti 1
             view.visibility = View.VISIBLE
-            (view.layoutParams as LinearLayout.LayoutParams).weight = 1f
+            val lp = (view.layoutParams as LinearLayout.LayoutParams)
+            lp.weight = if (view == btnAvvia) 2f else 1f
+            view.layoutParams = lp
         }
 
         if (!active) {
             showOnly(btnAvvia)
+
+            // make sure Avvia is clickable when visible
+            btnAvvia.isEnabled = true
 
             startForm.isClickable = true
             startForm.alpha = 1f
             startArrow.isEnabled = true
 
             unlockedForActions = false
+            // pausa/fine disabled when not active
             btnPausa.isEnabled = false
             btnFine1.isEnabled = false
+            btnFine2.isEnabled = false
 
             btnLock.setImageResource(R.drawable.lucchetto)
             btnLock.backgroundTintList = getColorStateList(R.color.dark_gray)
@@ -320,24 +343,37 @@ class AttivitaActivity : AppCompatActivity() {
             selectedTrainingIcon = null
 
         } else {
+            // when active hide avvia
+            btnAvvia.isEnabled = false
             startForm.isClickable = false
             startForm.alpha = 0.6f
             startArrow.isEnabled = false
 
             if (!paused) {
+                // running (not paused)
                 showOnly(setRunningLocked)
 
                 unlockedForActions = false
+                // pausa and fine in running set start disabled until lock is tapped
                 btnPausa.isEnabled = false
                 btnFine1.isEnabled = false
+                // keep riprendi/fine2 disabled because not visible
+                btnRiprendi.isEnabled = false
+                btnFine2.isEnabled = false
 
                 btnLock.setImageResource(R.drawable.lucchetto)
                 btnLock.backgroundTintList = getColorStateList(R.color.dark_gray)
 
             } else {
+                // paused
                 showOnly(setPaused)
 
+                // in paused state riprendi should be enabled
                 unlockedForActions = true
+                btnRiprendi.isEnabled = true
+                // fine while paused: enable only if unlockedForActions (we set true)
+                btnFine2.isEnabled = true
+
                 btnUnlock.setImageResource(R.drawable.lucchetto_aperto)
                 btnUnlock.backgroundTintList = getColorStateList(R.color.light_gray)
             }

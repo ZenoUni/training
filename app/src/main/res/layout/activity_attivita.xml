@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -100,16 +101,17 @@
         android:paddingStart="@dimen/form_side_margin"
         android:paddingEnd="@dimen/form_side_margin">
 
+        <!-- AVVIA: peso 2 (è il doppio più largo quando visibile) -->
         <Button
             android:id="@+id/btn_avvia"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="@string/avvia"
             android:textAllCaps="false"
-            android:background="@drawable/bg_button_rect"
-            android:textColor="@color/white"/>
-
+            android:textColor="@color/black"
+            android:background="@drawable/bg_button_green"
+            android:backgroundTint="@null" />
 
         <!-- SET 1: PAUSA | LUCCHETTO (locked) | FINE -->
         <LinearLayout
@@ -120,22 +122,25 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
+            <!-- pausa: stessa dimensione di "fine" / "riprendi" -->
             <Button
                 android:id="@+id/btn_pausa"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:text="@string/pausa"
                 android:textAllCaps="false"
-                android:background="@drawable/bg_button_rect"
-                android:textColor="@color/white"
-                android:enabled="false"/>
+                android:textColor="@color/black"
+                android:enabled="false"
+                android:background="@drawable/bg_button_yellow"
+                android:backgroundTint="@null"/>
 
+            <!-- lock: piccolo -->
             <ImageButton
                 android:id="@+id/btn_lock"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:scaleType="centerInside"
                 android:src="@drawable/lucchetto"
                 android:background="@drawable/bg_lock_rect"
@@ -143,16 +148,19 @@
                 android:contentDescription="@string/lock_desc"
                 android:adjustViewBounds="true"/>
 
+            <!-- fine: stessa dimensione di 'pausa' -->
             <Button
                 android:id="@+id/btn_fine_1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:text="@string/fine"
                 android:textAllCaps="false"
-                android:background="@drawable/bg_button_rect"
-                android:textColor="@color/white"
-                android:enabled="false"/>
+                android:textColor="@color/black"
+                android:enabled="false"
+                android:background="@drawable/bg_button_red"
+                android:backgroundTint="@null"/>
+
         </LinearLayout>
 
         <!-- SET 2: RIPRENDI | LUCC. APERTO | FINE (quando in pausa) -->
@@ -164,21 +172,24 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
+            <!-- riprendi: stessa dimensione di 'pausa'/'fine' -->
             <Button
                 android:id="@+id/btn_riprendi"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:text="@string/riprendi"
                 android:textAllCaps="false"
-                android:background="@drawable/bg_button_rect"
-                android:textColor="@color/white"/>
+                android:textColor="@color/black"
+                android:background="@drawable/bg_button_green"
+                android:backgroundTint="@null"/>
 
+            <!-- unlock: piccolo -->
             <ImageButton
                 android:id="@+id/btn_unlock"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:scaleType="centerInside"
                 android:src="@drawable/lucchetto_aperto"
                 android:background="@drawable/bg_lock_rect"
@@ -186,15 +197,19 @@
                 android:contentDescription="@string/unlock_desc"
                 android:adjustViewBounds="true"/>
 
+            <!-- fine: stessa dimensione di 'pausa'/'riprendi' -->
             <Button
                 android:id="@+id/btn_fine_2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:text="@string/fine"
                 android:textAllCaps="false"
-                android:background="@drawable/bg_button_rect"
-                android:textColor="@color/white"/>
+                android:textColor="@color/black"
+                android:enabled="false"
+                android:background="@drawable/bg_button_red"
+                android:backgroundTint="@null"/>
+
         </LinearLayout>
 
     </LinearLayout>
