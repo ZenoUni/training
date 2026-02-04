@@ -1,17 +1,16 @@
 package com.example.training.ui.activities
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.example.training.R
 import com.example.training.data.Scheda
 import com.example.training.ui.base.BottomNavFragment
@@ -22,22 +21,22 @@ class AttivitaActivity : AppCompatActivity() {
 
     private val viewModel: AppViewModel by viewModels()
 
-    // UI: form & text
+    // UI
     private lateinit var startForm: LinearLayout
     private lateinit var startIcon: ImageView
     private lateinit var startText: TextView
     private lateinit var startArrow: ImageView
-
-    // Timer text
     private lateinit var timerText: TextView
 
-    // Buttons / sets
     private lateinit var btnAvvia: Button
+
+    // RUNNING
     private lateinit var setRunningLocked: LinearLayout
     private lateinit var btnPausa: Button
     private lateinit var btnLock: ImageButton
     private lateinit var btnFine1: Button
 
+    // PAUSED
     private lateinit var setPaused: LinearLayout
     private lateinit var btnRiprendi: Button
     private lateinit var btnUnlock: ImageButton
@@ -48,25 +47,25 @@ class AttivitaActivity : AppCompatActivity() {
     private var selectedTrainingIcon: Int? = null
     private var schedeList: List<Scheda> = emptyList()
 
-    // lock local flag (UI only) - whether "lock" has been tapped to enable pause/fine
-    private var unlockedForActions = false
+    /** toggle SOLO per il lucchetto in RUNNING */
+    private var runningUnlocked = false
 
-    // timer ui updater
+    // timer
     private val handler = Handler(Looper.getMainLooper())
     private val uiRunnable = object : Runnable {
         override fun run() {
             val active = viewModel.trainingActive.value ?: false
             val paused = viewModel.trainingPaused.value ?: false
-            val elapsed: Long = if (!active) {
+
+            val elapsed = if (!active) {
                 0L
+            } else if (paused) {
+                viewModel.trainingAccumulated.value ?: 0L
             } else {
-                if (paused) {
-                    viewModel.trainingAccumulated.value ?: 0L
-                } else {
-                    val start = viewModel.trainingStart.value ?: System.currentTimeMillis()
-                    System.currentTimeMillis() - start
-                }
+                val start = viewModel.trainingStart.value ?: System.currentTimeMillis()
+                System.currentTimeMillis() - start
             }
+
             timerText.text = formatMillis(elapsed)
             handler.postDelayed(this, 200)
         }
@@ -76,26 +75,19 @@ class AttivitaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attivita)
 
-        // bottom nav
         supportFragmentManager.beginTransaction()
             .replace(R.id.bottom_nav_container, BottomNavFragment.newInstance(2))
             .commitAllowingStateLoss()
 
-        // data text
-        val dateText = findViewById<TextView>(R.id.date_text)
-        val today = java.util.Calendar.getInstance().time
-        val formatter = java.text.SimpleDateFormat("EEEE, dd MMMM yyyy", java.util.Locale.getDefault())
-        dateText.text = formatter.format(today)
-
-        // Bind UI
+        // bind UI
         startForm = findViewById(R.id.start_form)
         startIcon = findViewById(R.id.start_icon)
         startText = findViewById(R.id.start_text)
         startArrow = findViewById(R.id.start_arrow)
-
         timerText = findViewById(R.id.timer_text)
 
         btnAvvia = findViewById(R.id.btn_avvia)
+
         setRunningLocked = findViewById(R.id.set_running_locked)
         btnPausa = findViewById(R.id.btn_pausa)
         btnLock = findViewById(R.id.btn_lock)
@@ -106,151 +98,114 @@ class AttivitaActivity : AppCompatActivity() {
         btnUnlock = findViewById(R.id.btn_unlock)
         btnFine2 = findViewById(R.id.btn_fine_2)
 
-        // ---------------------------
-        // Forza background e rimuove tint del tema (fix definitivo per il "viola")
-        // ---------------------------
-        // Assicuriamoci di usare i drawable shape che hai creato e di cancellare
-        // qualunque backgroundTint che il tema (o AppCompat) possa aver applicato.
-        fun forceBgAndClearTint(button: Button, drawableRes: Int) {
-            // imposta il drawable come background (questo imposta il shape)
-            button.background = ContextCompat.getDrawable(this, drawableRes)
-            // rimuove qualunque tint applicato a runtime dal tema
-            button.backgroundTintList = null
-            // assicura che il testo sia bianco (nel caso il tema riavviasse qualcosa)
-            button.setTextColor(ContextCompat.getColor(this, R.color.white))
+        // stile pulsanti
+        fun style(b: Button, bg: Int, txt: Int) {
+            b.background = ContextCompat.getDrawable(this, bg)
+            b.backgroundTintList = null
+            b.setTextColor(ContextCompat.getColor(this, txt))
         }
 
-        // Applichiamo ai bottoni principali
-        forceBgAndClearTint(btnAvvia, R.drawable.bg_button_green)
-        forceBgAndClearTint(btnPausa, R.drawable.bg_button_yellow)
-        forceBgAndClearTint(btnFine1, R.drawable.bg_button_red)
-        forceBgAndClearTint(btnRiprendi, R.drawable.bg_button_green)
-        forceBgAndClearTint(btnFine2, R.drawable.bg_button_red)
+        style(btnAvvia, R.drawable.bg_button_green, R.color.white)
+        style(btnPausa, R.drawable.bg_button_yellow, R.color.black)
+        style(btnFine1, R.drawable.bg_button_red, R.color.white)
+        style(btnRiprendi, R.drawable.bg_button_green, R.color.white)
+        style(btnFine2, R.drawable.bg_button_red, R.color.white)
 
-        // Per gli ImageButton (lucchetto) manteniamo drawable e tint espliciti:
         btnLock.background = ContextCompat.getDrawable(this, R.drawable.bg_lock_rect)
-        btnLock.backgroundTintList = ContextCompat.getColorStateList(this, R.color.dark_gray)
         btnUnlock.background = ContextCompat.getDrawable(this, R.drawable.bg_lock_rect)
-        btnUnlock.backgroundTintList = ContextCompat.getColorStateList(this, R.color.light_gray)
-        // ---------------------------
 
-        // Stato iniziale coerente:
-        // Avvia deve essere cliccabile se visibile; pausa/fine devono partire disabilitati
-        btnAvvia.isEnabled = true
-        btnPausa.isEnabled = false
-        btnFine1.isEnabled = false
-        btnRiprendi.isEnabled = true   // riprendi verrà mostrato solo se lo stato è paused
-        btnFine2.isEnabled = false
-
-        // default label
+        // stato iniziale form
         startText.text = getString(R.string.inizia_allenamento)
         startIcon.visibility = View.GONE
 
-        // Click aprono il menu — ogni click ricarica schede fresche dal ViewModel
+        // ---- FORM ----
         startForm.setOnClickListener {
-            if (viewModel.trainingActive.value == true && viewModel.trainingPaused.value == false) {
-                Toast.makeText(this, getString(R.string.allenamento_in_corso), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            viewModel.loadSchede()
-            showStartSelector()
-        }
-        startArrow.setOnClickListener {
-            if (viewModel.trainingActive.value == true && viewModel.trainingPaused.value == false) {
-                Toast.makeText(this, getString(R.string.allenamento_in_corso), Toast.LENGTH_SHORT).show()
+            if (viewModel.trainingActive.value == true &&
+                viewModel.trainingPaused.value == false
+            ) {
+                Toast.makeText(this, R.string.allenamento_in_corso, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             viewModel.loadSchede()
             showStartSelector()
         }
 
-        // Avvia (inizia allenamento)
+        startArrow.setOnClickListener { startForm.performClick() }
+
         btnAvvia.setOnClickListener {
             val label = selectedTrainingLabel
             if (label.isNullOrBlank()) {
-                Toast.makeText(this, getString(R.string.seleziona_prima_un_allenamento), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    R.string.seleziona_prima_un_allenamento,
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
-            // start via viewmodel (persistente)
             viewModel.startTraining(label)
         }
 
-        // LOCK button: when displayed in running-locked set; user must tap it to enable pause & finish
+        // ---- LUCCCHETTI ----
+
+        // RUNNING → toggle infinito
         btnLock.setOnClickListener {
-            unlockedForActions = true
-            // enable pausa and fine in running set
-            btnPausa.isEnabled = true
-            btnFine1.isEnabled = true
-            // change visual: show locked -> unlocked icon/background; here we set icon to "open"
-            btnLock.setImageResource(R.drawable.lucchetto_aperto)
-            btnLock.backgroundTintList = getColorStateList(R.color.light_gray)
+            runningUnlocked = !runningUnlocked
+            btnPausa.isEnabled = runningUnlocked
+            btnFine1.isEnabled = runningUnlocked
+            btnLock.setImageResource(
+                if (runningUnlocked) R.drawable.lucchetto_aperto else R.drawable.lucchetto
+            )
         }
 
-        // In paused-set the unlock button is shown and should be already open (per your spec)
-        btnUnlock.setOnClickListener {
-            unlockedForActions = true
-        }
-
-        // Pausa: pause timer (but only if unlocked)
         btnPausa.setOnClickListener {
-            if (!unlockedForActions) {
-                Toast.makeText(this, getString(R.string.unlock_required), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            if (!runningUnlocked) return@setOnClickListener
             viewModel.pauseTraining()
         }
 
-        // Riprendi: resume timer
         btnRiprendi.setOnClickListener {
             viewModel.resumeTraining()
         }
 
-        btnFine1.setOnClickListener {
-            handleFinishTraining()
+        btnFine1.setOnClickListener { handleFinishTraining() }
+        btnFine2.setOnClickListener { handleFinishTraining() }
+
+        // observers
+        viewModel.schede.observe(this) { schedeList = it }
+
+        viewModel.trainingActive.observe(this) {
+            updateUi(it, viewModel.trainingPaused.value ?: false)
         }
 
-        btnFine2.setOnClickListener {
-            handleFinishTraining()
+        viewModel.trainingPaused.observe(this) {
+            updateUi(viewModel.trainingActive.value ?: false, it)
         }
 
-        // Observers
-        viewModel.schede.observe(this, Observer { list ->
-            schedeList = list
-        })
-
-        viewModel.trainingActive.observe(this, Observer { active ->
-            updateUiForTrainingState(active, viewModel.trainingPaused.value ?: false)
-        })
-
-        viewModel.trainingPaused.observe(this, Observer { paused ->
-            updateUiForTrainingState(viewModel.trainingActive.value ?: false, paused)
-        })
-
-        viewModel.trainingLabel.observe(this, Observer { label ->
-            // show label if active
+        viewModel.trainingLabel.observe(this) {
             if (viewModel.trainingActive.value == true) {
-                startText.text = label ?: getString(R.string.inizia_allenamento)
-                selectedTrainingLabel = label
+                startText.text = it
+                selectedTrainingLabel = it
+                selectedTrainingIcon?.let { icon ->
+                    startIcon.setImageResource(icon)
+                    startIcon.visibility = View.VISIBLE
+                }
             }
-        })
+        }
 
-        // Start/restore state
         viewModel.loadSchede()
         viewModel.loadTrainingState()
-
-        viewModel.trainingActive.observe(this) { active ->
-            if (!active) {
-                resetFormAfterStop()
-            }
-        }
-
     }
 
     override fun onResume() {
         super.onResume()
-        // start runnable if training active
-        handler.removeCallbacks(uiRunnable)
         handler.post(uiRunnable)
+
+        // reset form se NON c'è allenamento attivo
+        if (viewModel.trainingActive.value != true) {
+            selectedTrainingLabel = null
+            selectedTrainingIcon = null
+            startText.text = getString(R.string.inizia_allenamento)
+            startIcon.visibility = View.GONE
+        }
     }
 
     override fun onPause() {
@@ -258,171 +213,106 @@ class AttivitaActivity : AppCompatActivity() {
         handler.removeCallbacks(uiRunnable)
     }
 
+    private fun updateUi(active: Boolean, paused: Boolean) {
 
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacks(uiRunnable)
+        btnAvvia.visibility = View.GONE
+        setRunningLocked.visibility = View.GONE
+        setPaused.visibility = View.GONE
+
+        if (!active) {
+            btnAvvia.visibility = View.VISIBLE
+            runningUnlocked = false
+            return
+        }
+
+        if (!paused) {
+            setRunningLocked.visibility = View.VISIBLE
+            runningUnlocked = false
+            btnPausa.isEnabled = false
+            btnFine1.isEnabled = false
+            btnLock.setImageResource(R.drawable.lucchetto)
+        } else {
+            setPaused.visibility = View.VISIBLE
+            btnUnlock.setImageResource(R.drawable.lucchetto_aperto)
+        }
     }
 
     private fun handleFinishTraining() {
-        val start = viewModel.trainingStart.value ?: return
-        val elapsed = System.currentTimeMillis() - start
 
-        val twentyMinutes = TimeUnit.MINUTES.toMillis(20)
+        // calcolo elapsed PRIMA dello stop
+        val start = viewModel.trainingStart.value
+        val accumulated = viewModel.trainingAccumulated.value ?: 0L
 
-        if (elapsed < twentyMinutes) {
+        val elapsed = if (viewModel.trainingPaused.value == true) {
+            accumulated
+        } else if (start != null) {
+            accumulated + (System.currentTimeMillis() - start)
+        } else {
+            accumulated
+        }
+
+        val underTwentyMinutes = elapsed < TimeUnit.MINUTES.toMillis(20)
+
+        // l'allenamento finisce SEMPRE
+        viewModel.stopTraining()
+        resetFormAfterStop()
+
+        if (underTwentyMinutes) {
             AlertDialog.Builder(this)
                 .setTitle(getString(R.string.hai_gia_finito))
                 .setMessage(getString(R.string.popup_fine_anticipata))
-                .setNegativeButton(getString(R.string.no_elimina)) { _, _ ->
-                    viewModel.stopTraining()
-                    // reset UI
-                    resetFormAfterStop()
-                }
-                .setPositiveButton(getString(R.string.si_salva)) { _, _ ->
-                    viewModel.stopTraining()
-                    resetFormAfterStop()
-                }
+                .setNegativeButton(getString(R.string.no_elimina)) { d, _ -> d.dismiss() }
+                .setPositiveButton(getString(R.string.si_salva)) { d, _ -> d.dismiss() }
                 .show()
-        } else {
-            viewModel.stopTraining()
-            resetFormAfterStop()
         }
     }
 
     private fun resetFormAfterStop() {
-        // UI cleanup after stop: torna al testo iniziale e nascondi icona
         selectedTrainingLabel = null
         selectedTrainingIcon = null
         startText.text = getString(R.string.inizia_allenamento)
         startIcon.visibility = View.GONE
     }
 
-    private fun updateUiForTrainingState(active: Boolean, paused: Boolean) {
-
-        fun showOnly(view: View) {
-            // nascondi tutto e azzera pesi
-            btnAvvia.visibility = View.GONE
-            setRunningLocked.visibility = View.GONE
-            setPaused.visibility = View.GONE
-
-            (btnAvvia.layoutParams as LinearLayout.LayoutParams).apply { weight = 0f }
-            (setRunningLocked.layoutParams as LinearLayout.LayoutParams).apply { weight = 0f }
-            (setPaused.layoutParams as LinearLayout.LayoutParams).apply { weight = 0f }
-
-            // mostra quello selezionato; assegna peso 2 se è AVVIA, altrimenti 1
-            view.visibility = View.VISIBLE
-            val lp = (view.layoutParams as LinearLayout.LayoutParams)
-            lp.weight = if (view == btnAvvia) 2f else 1f
-            view.layoutParams = lp
-        }
-
-        if (!active) {
-            showOnly(btnAvvia)
-
-            // make sure Avvia is clickable when visible
-            btnAvvia.isEnabled = true
-
-            startForm.isClickable = true
-            startForm.alpha = 1f
-            startArrow.isEnabled = true
-
-            unlockedForActions = false
-            // pausa/fine disabled when not active
-            btnPausa.isEnabled = false
-            btnFine1.isEnabled = false
-            btnFine2.isEnabled = false
-
-            btnLock.setImageResource(R.drawable.lucchetto)
-            btnLock.backgroundTintList = getColorStateList(R.color.dark_gray)
-
-            // reset text/icon when not active
-            startText.text = getString(R.string.inizia_allenamento)
-            startIcon.visibility = View.GONE
-            selectedTrainingLabel = null
-            selectedTrainingIcon = null
-
-        } else {
-            // when active hide avvia
-            btnAvvia.isEnabled = false
-            startForm.isClickable = false
-            startForm.alpha = 0.6f
-            startArrow.isEnabled = false
-
-            if (!paused) {
-                // running (not paused)
-                showOnly(setRunningLocked)
-
-                unlockedForActions = false
-                // pausa and fine in running set start disabled until lock is tapped
-                btnPausa.isEnabled = false
-                btnFine1.isEnabled = false
-                // keep riprendi/fine2 disabled because not visible
-                btnRiprendi.isEnabled = false
-                btnFine2.isEnabled = false
-
-                btnLock.setImageResource(R.drawable.lucchetto)
-                btnLock.backgroundTintList = getColorStateList(R.color.dark_gray)
-
-            } else {
-                // paused
-                showOnly(setPaused)
-
-                // in paused state riprendi should be enabled
-                unlockedForActions = true
-                btnRiprendi.isEnabled = true
-                // fine while paused: enable only if unlockedForActions (we set true)
-                btnFine2.isEnabled = true
-
-                btnUnlock.setImageResource(R.drawable.lucchetto_aperto)
-                btnUnlock.backgroundTintList = getColorStateList(R.color.light_gray)
-            }
-        }
-    }
-
     private fun showStartSelector() {
         val items = mutableListOf<Pair<Int?, String>>()
         val schede = viewModel.schede.value ?: emptyList()
+
         for (s in schede) items.add(Pair(R.drawable.foglio, s.nome))
         items.add(Pair(R.drawable.corsa_colori, getString(R.string.corsa)))
         items.add(Pair(R.drawable.boxe_colori, getString(R.string.pugilato)))
 
         val labels = items.map { it.second }.toTypedArray()
-        val adapter = object : ArrayAdapter<String>(this, R.layout.item_action, R.id.item_text, labels) {
-            override fun getView(position: Int, convertView: View?, parent: android.view.ViewGroup): View {
-                val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_action, parent, false)
-                val iconView = view.findViewById<ImageView>(R.id.item_icon)
-                val textView = view.findViewById<TextView>(R.id.item_text)
-                val iconRes = items[position].first
-                if (iconRes != null) iconView.setImageResource(iconRes) else iconView.setImageDrawable(null)
-                textView.text = items[position].second
+
+        val adapter = object :
+            ArrayAdapter<String>(this, R.layout.item_action, R.id.item_text, labels) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = convertView ?: LayoutInflater.from(context)
+                    .inflate(R.layout.item_action, parent, false)
+                view.findViewById<TextView>(R.id.item_text).text = items[position].second
+                view.findViewById<ImageView>(R.id.item_icon)
+                    .setImageResource(items[position].first ?: 0)
                 return view
             }
         }
 
         AlertDialog.Builder(this)
-            .setAdapter(adapter) { dialog, which ->
-                val label = items[which].second
-                val iconRes = items[which].first
-                selectedTrainingLabel = label
-                selectedTrainingIcon = iconRes
-                startText.text = label
-                if (iconRes != null) {
-                    startIcon.setImageResource(iconRes)
-                    startIcon.visibility = View.VISIBLE
-                } else {
-                    startIcon.visibility = View.GONE
-                }
-                timerText.text = formatMillis(0)
-                dialog.dismiss()
+            .setAdapter(adapter) { d, which ->
+                selectedTrainingLabel = items[which].second
+                selectedTrainingIcon = items[which].first
+                startText.text = selectedTrainingLabel
+                startIcon.setImageResource(selectedTrainingIcon ?: 0)
+                startIcon.visibility = View.VISIBLE
+                d.dismiss()
             }
             .show()
     }
 
     private fun formatMillis(ms: Long): String {
-        val hours = TimeUnit.MILLISECONDS.toHours(ms)
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(ms) - TimeUnit.HOURS.toMinutes(hours)
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(ms) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(ms))
-        return String.format("%d:%02d:%02d", hours, minutes, seconds)
+        val h = TimeUnit.MILLISECONDS.toHours(ms)
+        val m = TimeUnit.MILLISECONDS.toMinutes(ms) - TimeUnit.HOURS.toMinutes(h)
+        val s = TimeUnit.MILLISECONDS.toSeconds(ms) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(ms))
+        return String.format("%d:%02d:%02d", h, m, s)
     }
 }

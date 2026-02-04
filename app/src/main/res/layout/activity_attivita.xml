@@ -109,7 +109,7 @@
             android:layout_weight="2"
             android:text="@string/avvia"
             android:textAllCaps="false"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:background="@drawable/bg_button_green"
             android:backgroundTint="@null" />
 
@@ -144,7 +144,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/lucchetto"
                 android:background="@drawable/bg_lock_rect"
-                android:backgroundTint="@color/dark_gray"
+                android:backgroundTint="@color/light_gray"
                 android:contentDescription="@string/lock_desc"
                 android:adjustViewBounds="true"/>
 
@@ -156,7 +156,7 @@
                 android:layout_weight="1"
                 android:text="@string/fine"
                 android:textAllCaps="false"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:enabled="false"
                 android:background="@drawable/bg_button_red"
                 android:backgroundTint="@null"/>
@@ -180,7 +180,7 @@
                 android:layout_weight="1"
                 android:text="@string/riprendi"
                 android:textAllCaps="false"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:background="@drawable/bg_button_green"
                 android:backgroundTint="@null"/>
 
@@ -205,7 +205,7 @@
                 android:layout_weight="1"
                 android:text="@string/fine"
                 android:textAllCaps="false"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:enabled="false"
                 android:background="@drawable/bg_button_red"
                 android:backgroundTint="@null"/>
