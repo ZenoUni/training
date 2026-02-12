@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Contenuto centrale Obiettivi -->
     <TextView
         android:id="@+id/central_text"
         android:layout_width="wrap_content"
@@ -19,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Container per il BottomNavFragment -->
+    <!-- CONTAINER FOR BottomNavFragment -->
     <FrameLayout
         android:id="@+id/bottom_nav_container"
         android:layout_width="match_parent"

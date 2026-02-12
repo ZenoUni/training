@@ -10,22 +10,28 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.training.R
 
+/**
+ * Splash screen shown at app startup.
+ */
 class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_splash)
 
+        // Apply system window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Mostra la Splash per 0.5 secondi, poi vai ad AttivitaActivity
+        // Show splash for 0.5 seconds then open TrainingActivity
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, AttivitaActivity::class.java))
-            finish() // chiude SplashActivity
+            startActivity(Intent(this, TrainingActivity::class.java))
+            finish()
         }, 500)
     }
 }

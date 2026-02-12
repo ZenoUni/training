@@ -9,14 +9,18 @@
         <dimen name="bottom_nav_margin">15dp</dimen>
         <dimen name="padding_button">4dp</dimen>
 
-    <!-- Attività -->
-
+    <!-- Training -->
         <dimen name="text_size_large">28sp</dimen>
         <dimen name="date_top_margin">100dp</dimen>
-        <dimen name="button_height">56dp</dimen>      <!-- altezza uniforme dei pulsanti -->
+        <dimen name="button_height">56dp</dimen>
+        <dimen name="content_padding_big">16dp</dimen>
+        <dimen name="divider_height">1dp</dimen>
+        <dimen name="divider_margin_top">8dp</dimen>
+        <dimen name="dialog_body_max_height">240dp</dimen>
+        <dimen name="text_margin_small">8dp</dimen>
 
 
-    <!-- Schede -->
+    <!-- Cards -->
         <dimen name="form_top_margin">16dp</dimen>
         <dimen name="form_padding_horizontal">16dp</dimen>
         <dimen name="form_padding_vertical">12dp</dimen>
@@ -39,13 +43,13 @@
         <dimen name="button_space">8dp</dimen>
         <dimen name="exercise_height">200dp</dimen>
 
-    <!-- item scheda -->
+    <!-- item card -->
         <dimen name="item_scheda_padding">16dp</dimen>
         <dimen name="item_scheda_margin_bottom">12dp</dimen>
         <dimen name="item_title_margin">8dp</dimen>
 
     <!-- item action -->
-    <dimen name="item_action_height">48dp</dimen>
+        <dimen name="item_action_height">48dp</dimen>
 
 
 

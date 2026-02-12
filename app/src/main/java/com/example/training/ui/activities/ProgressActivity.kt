@@ -5,14 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.training.R
 import com.example.training.ui.base.BottomNavFragment
 
-class ObiettiviActivity : AppCompatActivity() {
+/**
+ * Progress screen activity.
+ */
+class ProgressActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_obiettivi)
+        setContentView(R.layout.activity_progress)
 
-        // Inserisci la BottomNavFragment (activeIndex = 0)
+        // Insert Bottom Navigation (active index = 3)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.bottom_nav_container, BottomNavFragment.newInstance(0))
+            .replace(R.id.bottom_nav_container, BottomNavFragment.newInstance(3))
             .commitAllowingStateLoss()
     }
 }

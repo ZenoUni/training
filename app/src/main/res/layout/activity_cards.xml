@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- TITOLO -->
+    <!-- TITLE -->
     <TextView
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- FORM: include down_arrow a destra -->
+    <!-- FORM -->
     <LinearLayout
         android:id="@+id/form_action"
         android:layout_width="0dp"
@@ -41,7 +41,6 @@
         android:layout_marginStart="@dimen/form_side_margin"
         android:layout_marginEnd="@dimen/form_side_margin">
 
-        <!-- Icona selezione -->
         <ImageView
             android:id="@+id/action_icon"
             android:layout_width="@dimen/icon_size"
@@ -49,7 +48,6 @@
             android:src="@drawable/occhio"
             android:contentDescription="@string/desc_action_icon"/>
 
-        <!-- Testo selezione -->
         <TextView
             android:id="@+id/action_text"
             android:layout_width="0dp"
@@ -61,7 +59,6 @@
             android:textSize="@dimen/text_size"
             android:textColor="@color/black"/>
 
-        <!-- Freccetta destra -->
         <ImageView
             android:id="@+id/action_arrow"
             android:layout_width="wrap_content"
@@ -73,7 +70,7 @@
             android:layout_marginEnd="@dimen/form_arrow_margin"/>
     </LinearLayout>
 
-    <!-- Area scroll schede -->
+    <!-- SCROLL AREA FOR CARDS -->
     <ScrollView
         android:id="@+id/schede_scroll"
         android:layout_width="0dp"
@@ -91,22 +88,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/content_padding">
-
-            <TextView
-                android:id="@+id/empty_state_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_schede"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_size"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/empty_state_margin_top"/>
-
-        </LinearLayout>
+            android:padding="@dimen/content_padding"/>
     </ScrollView>
 
-    <!-- Container per il BottomNavFragment -->
+    <!-- EMPTY STATE TEXT (outside ScrollView) -->
+    <TextView
+        android:id="@+id/empty_state_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_schede"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/text_size"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/schede_scroll"
+        app:layout_constraintBottom_toBottomOf="@id/schede_scroll"
+        app:layout_constraintStart_toStartOf="@id/schede_scroll"
+        app:layout_constraintEnd_toEndOf="@id/schede_scroll"/>
+
+    <!-- CONTAINER FOR BottomNavFragment -->
     <FrameLayout
         android:id="@+id/bottom_nav_container"
         android:layout_width="match_parent"
@@ -115,4 +114,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

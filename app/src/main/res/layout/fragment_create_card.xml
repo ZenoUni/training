@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Titolo fragment -->
+        <!-- TITLE -->
         <TextView
             android:id="@+id/create_title"
             android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
             android:layout_gravity="center_horizontal"
             android:paddingBottom="@dimen/fragment_title_padding"/>
 
-        <!-- Nome scheda -->
+        <!-- NAME CARD -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             android:background="@drawable/edittext_bg"
             android:padding="@dimen/edittext_padding"/>
 
-        <!-- Esercizi (multilinea) -->
+        <!-- EXERCISES -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:padding="@dimen/edittext_padding"
             android:scrollbars="vertical"/>
 
-        <!-- Bottoni in basso -->
+        <!-- BUTTONS -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

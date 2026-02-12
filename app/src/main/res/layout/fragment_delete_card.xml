@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Intestazione -->
+        <!-- TITLE -->
         <TextView
             android:id="@+id/delete_title"
             android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
             android:layout_gravity="center_horizontal"
             android:paddingBottom="@dimen/fragment_title_padding" />
 
-        <!-- FORM selezione (cliccabile) -->
+        <!-- FORM -->
         <LinearLayout
             android:id="@+id/delete_form"
             android:layout_width="match_parent"
@@ -53,12 +53,11 @@
                 android:paddingEnd="@dimen/form_arrow_margin"/>
         </LinearLayout>
 
-        <!-- Spazio tra form e preview -->
         <View
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
-        <!-- Preview della scheda selezionata -->
+        <!-- PREVIEW -->
         <LinearLayout
             android:id="@+id/delete_preview_container"
             android:layout_width="match_parent"
@@ -69,7 +68,6 @@
             android:visibility="gone"
             android:background="@android:color/transparent">
 
-            <!-- bordo nero -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -91,7 +89,6 @@
                 android:layout_marginTop="@dimen/text_margin_top"
                 android:textColor="@color/black"/>
 
-            <!-- bordo inferiore -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -100,7 +97,7 @@
         </LinearLayout>
 
 
-        <!-- Bottoni -->
+        <!-- BUTTONS -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -11,7 +11,6 @@
     android:paddingBottom="@dimen/padding_button"
     android:layout_marginBottom="@dimen/bottom_nav_margin">
 
-    <!-- Obiettivi -->
     <LinearLayout
         android:id="@+id/nav_obiettivi"
         android:layout_width="0dp"
@@ -38,7 +37,6 @@
             android:layout_marginBottom="@dimen/text_margin_bottom"/>
     </LinearLayout>
 
-    <!-- Schede -->
     <LinearLayout
         android:id="@+id/nav_schede"
         android:layout_width="0dp"
@@ -65,7 +63,6 @@
             android:layout_marginBottom="@dimen/text_margin_bottom"/>
     </LinearLayout>
 
-    <!-- Attività (centrale) -->
     <LinearLayout
         android:id="@+id/nav_attivita"
         android:layout_width="0dp"
@@ -92,7 +89,6 @@
             android:layout_marginBottom="@dimen/text_margin_bottom"/>
     </LinearLayout>
 
-    <!-- Progressi -->
     <LinearLayout
         android:id="@+id/nav_progressi"
         android:layout_width="0dp"
@@ -119,7 +115,6 @@
             android:layout_marginBottom="@dimen/text_margin_bottom"/>
     </LinearLayout>
 
-    <!-- Recap -->
     <LinearLayout
         android:id="@+id/nav_recap"
         android:layout_width="0dp"

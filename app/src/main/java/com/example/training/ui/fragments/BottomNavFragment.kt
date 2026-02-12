@@ -10,38 +10,48 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.training.R
-import com.example.training.ui.activities.AttivitaActivity
-import com.example.training.ui.activities.ObiettiviActivity
-import com.example.training.ui.activities.ProgressiActivity
+import com.example.training.ui.activities.TrainingActivity
+import com.example.training.ui.activities.GoalsActivity
+import com.example.training.ui.activities.ProgressActivity
 import com.example.training.ui.activities.RecapActivity
-import com.example.training.ui.activities.SchedeActivity
+import com.example.training.ui.activities.CardsActivity
 
 class BottomNavFragment : Fragment() {
 
     companion object {
+
         private const val ARG_ACTIVE_INDEX = "arg_active_index"
+
+        /** Creates a new BottomNavFragment with the selected active index */
         fun newInstance(activeIndex: Int) = BottomNavFragment().apply {
-            arguments = Bundle().apply { putInt(ARG_ACTIVE_INDEX, activeIndex) }
+            arguments = Bundle().apply {
+                putInt(ARG_ACTIVE_INDEX, activeIndex)
+            }
         }
     }
 
     private var activeIndex: Int = 0
 
+    /** Retrieves the active navigation index from arguments */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activeIndex = arguments?.getInt(ARG_ACTIVE_INDEX) ?: 0
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate fragment layout which contains the nav
+    /** Inflates the bottom navigation layout */
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_bottom_nav, container, false)
     }
 
+    /** Initializes navigation items and click listeners */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Trova il layout della nav all'interno del fragment_bottom_nav
+
         val bottomNav = view.findViewById<LinearLayout>(R.id.bottom_navigation)
 
-        // icone
         val icons = listOf(
             bottomNav.findViewById<ImageView>(R.id.icon_obiettivi),
             bottomNav.findViewById<ImageView>(R.id.icon_schede),
@@ -66,27 +76,28 @@ class BottomNavFragment : Fragment() {
             bottomNav.findViewById<LinearLayout>(R.id.nav_recap)
         )
 
-        // evidenzia
-        icons.forEachIndexed { i, icon ->
-            val color = if (i == activeIndex) R.color.black else R.color.gray
+        // Highlight the active navigation item
+        icons.forEachIndexed { index, icon ->
+            val color = if (index == activeIndex) R.color.black else R.color.gray
             icon.setColorFilter(requireContext().getColor(color))
-            texts[i].setTextColor(requireContext().getColor(color))
+            texts[index].setTextColor(requireContext().getColor(color))
         }
 
-        // attività da aprire
         val activities = listOf(
-            ObiettiviActivity::class.java,
-            SchedeActivity::class.java,
-            AttivitaActivity::class.java,
-            ProgressiActivity::class.java,
+            GoalsActivity::class.java,
+            CardsActivity::class.java,
+            TrainingActivity::class.java,
+            ProgressActivity::class.java,
             RecapActivity::class.java
         )
 
+        // Assign click listeners to each navigation item
         navLayouts.forEachIndexed { index, layout ->
             layout.setOnClickListener {
                 if (index != activeIndex) {
                     val intent = Intent(requireContext(), activities[index])
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                     requireActivity().overridePendingTransition(0, 0)
                 }

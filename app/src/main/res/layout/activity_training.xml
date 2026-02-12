@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- DATA AUTOMATICA -->
+    <!-- DATE -->
     <TextView
         android:id="@+id/date_text"
         android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- FORM: Inizia il tuo allenamento -->
+    <!-- FORM -->
     <LinearLayout
         android:id="@+id/start_form"
         android:layout_width="0dp"
@@ -42,7 +42,6 @@
         android:layout_marginStart="@dimen/form_side_margin"
         android:layout_marginEnd="@dimen/form_side_margin">
 
-        <!-- Icona selezionata (invisibile di default) -->
         <ImageView
             android:id="@+id/start_icon"
             android:layout_width="@dimen/icon_size"
@@ -50,7 +49,6 @@
             android:layout_marginEnd="@dimen/text_margin_left"
             android:visibility="gone"/>
 
-        <!-- Testo -->
         <TextView
             android:id="@+id/start_text"
             android:layout_width="0dp"
@@ -60,7 +58,6 @@
             android:textSize="@dimen/text_size"
             android:textColor="@color/black"/>
 
-        <!-- Freccetta destra -->
         <ImageView
             android:id="@+id/start_arrow"
             android:layout_width="wrap_content"
@@ -72,7 +69,21 @@
             android:layout_marginEnd="@dimen/form_arrow_margin"/>
     </LinearLayout>
 
-    <!-- Timer cerchio -->
+    <!-- VIEW-CARD HINT (visible only when a saved scheda is selected) -->
+    <TextView
+        android:id="@+id/tv_view_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="clicca per visualizzare la scheda"
+        android:textStyle="italic"
+        android:textColor="@color/gray"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/start_form"
+        android:layout_marginTop="@dimen/text_margin_small"
+        app:layout_constraintStart_toStartOf="@id/start_form"
+        app:layout_constraintEnd_toEndOf="@id/start_form"/>
+
+    <!-- TIMER -->
     <TextView
         android:id="@+id/timer_text"
         android:layout_width="220dp"
@@ -82,12 +93,12 @@
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold"
         android:background="@drawable/bg_timer_circle"
-        app:layout_constraintTop_toBottomOf="@id/start_form"
+        app:layout_constraintTop_toBottomOf="@id/tv_view_card"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Pulsanti: container con tutte le combinazioni (visibilità gestita via code) -->
+    <!-- BUTTONS SET 1 -->
     <LinearLayout
         android:id="@+id/timer_buttons_container"
         android:layout_width="0dp"
@@ -101,7 +112,6 @@
         android:paddingStart="@dimen/form_side_margin"
         android:paddingEnd="@dimen/form_side_margin">
 
-        <!-- AVVIA: peso 2 (è il doppio più largo quando visibile) -->
         <Button
             android:id="@+id/btn_avvia"
             android:layout_width="0dp"
@@ -113,7 +123,6 @@
             android:background="@drawable/bg_button_green"
             android:backgroundTint="@null" />
 
-        <!-- SET 1: PAUSA | LUCCHETTO (locked) | FINE -->
         <LinearLayout
             android:id="@+id/set_running_locked"
             android:layout_width="0dp"
@@ -122,7 +131,6 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <!-- pausa: stessa dimensione di "fine" / "riprendi" -->
             <Button
                 android:id="@+id/btn_pausa"
                 android:layout_width="0dp"
@@ -135,7 +143,6 @@
                 android:background="@drawable/bg_button_yellow"
                 android:backgroundTint="@null"/>
 
-            <!-- lock: piccolo -->
             <ImageButton
                 android:id="@+id/btn_lock"
                 android:layout_width="0dp"
@@ -148,7 +155,6 @@
                 android:contentDescription="@string/lock_desc"
                 android:adjustViewBounds="true"/>
 
-            <!-- fine: stessa dimensione di 'pausa' -->
             <Button
                 android:id="@+id/btn_fine_1"
                 android:layout_width="0dp"
@@ -163,7 +169,7 @@
 
         </LinearLayout>
 
-        <!-- SET 2: RIPRENDI | LUCC. APERTO | FINE (quando in pausa) -->
+        <!-- BUTTONS SET 2 -->
         <LinearLayout
             android:id="@+id/set_paused"
             android:layout_width="0dp"
@@ -172,7 +178,6 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <!-- riprendi: stessa dimensione di 'pausa'/'fine' -->
             <Button
                 android:id="@+id/btn_riprendi"
                 android:layout_width="0dp"
@@ -184,7 +189,6 @@
                 android:background="@drawable/bg_button_green"
                 android:backgroundTint="@null"/>
 
-            <!-- unlock: piccolo -->
             <ImageButton
                 android:id="@+id/btn_unlock"
                 android:layout_width="0dp"
@@ -197,7 +201,6 @@
                 android:contentDescription="@string/unlock_desc"
                 android:adjustViewBounds="true"/>
 
-            <!-- fine: stessa dimensione di 'pausa'/'riprendi' -->
             <Button
                 android:id="@+id/btn_fine_2"
                 android:layout_width="0dp"
@@ -221,7 +224,6 @@
         app:layout_constraintTop_toBottomOf="@id/timer_buttons_container"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav_container"/>
 
-    <!-- Container per il BottomNavFragment -->
     <FrameLayout
         android:id="@+id/bottom_nav_container"
         android:layout_width="match_parent"

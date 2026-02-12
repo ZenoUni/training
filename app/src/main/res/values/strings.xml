@@ -8,7 +8,7 @@
     <string name="progressi">Progressi</string>
     <string name="recap">Recap</string>
 
-    <!-- Attività -->
+    <!-- Trainings -->
     <string name="today_date_placeholder">Oggi</string>
     <string name="inizia_allenamento">Inizia il tuo allenamento 🔥</string>
     <string name="corsa">Corsa</string>
@@ -28,9 +28,10 @@
     </string>
     <string name="no_elimina">NO, Elimina</string>
     <string name="si_salva">SI, Salva</string>
+    <string name="scheda_dettaglio"><u>clicca per visualizzare la scheda</u></string>
 
 
-    <!-- Schede -->
+    <!-- Cards -->
     <string name="le_tue_schede">Le Tue Schede</string>
     <string name="azione_visualizza">Visualizza tutto</string>
     <string name="azione_modifica">Modifica scheda</string>
@@ -65,8 +66,5 @@
     <string name="confirm_save_modifiche">Sicuro di voler salvare le modifiche?</string>
     <string name="modifiche_salvate">Modifiche salvate</string>
     <string name="ok">Ok</string>
-
-
-
 
 </resources>
