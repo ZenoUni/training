@@ -29,6 +29,14 @@
     <string name="no_elimina">NO, Elimina</string>
     <string name="si_salva">SI, Salva</string>
     <string name="scheda_dettaglio"><u>clicca per visualizzare la scheda</u></string>
+    <string name="insert_distance_message">Inserisci la distanza percorsa in km</string>
+    <string name="distance_hint">0.0</string>
+    <string name="distance_saved_placeholder">Distanza registrata (placeholder)</string>
+    <string name="training_saved">Allenamento salvato con successo</string>
+    <string name="training_deleted">Allenamento eliminato con successo</string>
+    <string name="run_training_saved">Allenamento e distanza salvati con successo</string>
+
+
 
 
     <!-- Cards -->

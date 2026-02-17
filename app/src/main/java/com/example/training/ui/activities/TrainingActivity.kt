@@ -8,7 +8,11 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.InputType
+import android.text.TextWatcher
 import android.text.method.ScrollingMovementMethod
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -333,7 +337,7 @@ class TrainingActivity : AppCompatActivity() {
     }
 
     // ---------- FINISH TRAINING ----------
-
+    // When "FINE" is pressed (either set) handle end-of-training flows.
     private fun handleFinishTraining() {
 
         val start = viewModel.trainingStart.value
@@ -346,20 +350,89 @@ class TrainingActivity : AppCompatActivity() {
         }
 
         val underTwentyMinutes = elapsed < TimeUnit.MINUTES.toMillis(20)
+        val isCorsa = selectedTrainingLabel == getString(R.string.corsa)
 
-        // Training always ends
-        viewModel.stopTraining()
-        resetForm()
+        // ---------- CORSA ----------
+        if (isCorsa) {
 
+            if (underTwentyMinutes) {
+                AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.hai_gia_finito))
+                    .setMessage(getString(R.string.popup_fine_anticipata))
+                    .setNegativeButton(getString(R.string.no_elimina)) { d, _ ->
+                        viewModel.stopTraining()
+                        resetForm()
+
+                        Toast.makeText(
+                            this,
+                            getString(R.string.training_deleted),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        d.dismiss()
+                    }
+                    .setPositiveButton(getString(R.string.si_salva)) { d, _ ->
+                        viewModel.stopTraining()
+                        resetForm()
+                        d.dismiss()
+
+                        // show distance popup
+                        showDistanceInputDialog()
+                    }
+                    .show()
+            } else {
+                viewModel.stopTraining()
+                resetForm()
+                showDistanceInputDialog()
+            }
+            return
+        }
+
+        // ---------- ALLENAMENTI NORMALI ----------
         if (underTwentyMinutes) {
+
             AlertDialog.Builder(this)
                 .setTitle(getString(R.string.hai_gia_finito))
                 .setMessage(getString(R.string.popup_fine_anticipata))
-                .setNegativeButton(getString(R.string.no_elimina)) { d, _ -> d.dismiss() }
-                .setPositiveButton(getString(R.string.si_salva)) { d, _ -> d.dismiss() }
+                .setNegativeButton(getString(R.string.no_elimina)) { d, _ ->
+                    viewModel.stopTraining()
+                    resetForm()
+
+                    Toast.makeText(
+                        this,
+                        getString(R.string.training_deleted),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    d.dismiss()
+                }
+                .setPositiveButton(getString(R.string.si_salva)) { d, _ ->
+                    viewModel.stopTraining()
+                    resetForm()
+
+                    Toast.makeText(
+                        this,
+                        getString(R.string.training_saved),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    d.dismiss()
+                }
                 .show()
+
+        } else {
+            viewModel.stopTraining()
+            resetForm()
+
+            Toast.makeText(
+                this,
+                getString(R.string.training_saved),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
+
+
 
     private fun resetForm() {
         selectedTrainingLabel = null
@@ -436,7 +509,6 @@ class TrainingActivity : AppCompatActivity() {
     }
 
     // ---------- CARD POPUP ----------
-
     // Shows a professional dialog: title=name, separator, scrollable body with exercises
     private fun showCardPopup(card: Card) {
         // inflate a small container programmatically
@@ -487,6 +559,81 @@ class TrainingActivity : AppCompatActivity() {
             .setPositiveButton(getString(R.string.ok), null)
             .show()
     }
+
+    // ---------- DISTANCE INPUT DIALOG ----------
+    // Shows a dialog that asks the user to enter the distance (km) using a numeric decimal input.
+    private fun showDistanceInputDialog() {
+
+        val pad = resources.getDimensionPixelSize(R.dimen.content_padding)
+
+        val container = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(pad, pad, pad, pad)
+        }
+
+        val message = TextView(this).apply {
+            text = getString(R.string.insert_distance_message)
+            setTextColor(ContextCompat.getColor(this@TrainingActivity, R.color.black))
+            textSize = resources.getDimension(R.dimen.text_size) / resources.displayMetrics.density
+        }
+
+        val input = EditText(this).apply {
+            hint = getString(R.string.distance_hint)
+            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+            isSingleLine = true
+        }
+
+        val btnSave = Button(this).apply {
+            text = getString(R.string.salva)
+            background = ContextCompat.getDrawable(
+                this@TrainingActivity,
+                R.drawable.bg_button_green
+            )
+            setTextColor(ContextCompat.getColor(this@TrainingActivity, R.color.white))
+            isEnabled = false
+        }
+
+        container.addView(message)
+        container.addView(input)
+        container.addView(btnSave)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(container)
+            .create()
+
+        val validRegex = Regex("^\\d+(?:[\\.,]\\d+)?$")
+
+        input.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val t = s?.toString()?.trim() ?: ""
+                btnSave.isEnabled = validRegex.matches(t)
+            }
+        })
+
+        btnSave.setOnClickListener {
+
+            val raw = input.text.toString().trim()
+
+            // Always save/display with comma
+            val formattedDistance = raw.replace('.', ',')
+
+            // TODO: save formattedDistance in next step
+
+            dialog.dismiss()
+
+            Toast.makeText(
+                this,
+                getString(R.string.run_training_saved),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        dialog.show()
+    }
+
 
     // ---------- UTIL ----------
 
