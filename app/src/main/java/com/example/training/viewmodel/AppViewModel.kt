@@ -8,10 +8,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.training.data.AppRepository
 import com.example.training.data.Card
+import com.example.training.data.Training
 
+/**
+ * Application ViewModel — orchestrates repository access for UI.
+ */
 class AppViewModel(application: Application) : AndroidViewModel(application) {
 
-    // SharedPreferences configuration
+    // SharedPreferences configuration for training persistence (existing)
     private val prefsName = "training_prefs"
     private val KEY_TRAINING_ACTIVE = "training_active"
     private val KEY_TRAINING_LABEL = "training_label"
@@ -28,7 +32,19 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val schede: LiveData<List<Card>> = _schede
 
     // ---------------------------
-    // Persistent Training LiveData
+    // Trainings LiveData
+    // ---------------------------
+    private val _trainings = MutableLiveData<List<Training>>(emptyList())
+    val trainings: LiveData<List<Training>> = _trainings
+
+    // ---------------------------
+    // Goals LiveData (map name -> target count)
+    // ---------------------------
+    private val _goals = MutableLiveData<Map<String, Int>>(emptyMap())
+    val goals: LiveData<Map<String, Int>> = _goals
+
+    // ---------------------------
+    // Persistent Training LiveData (existing)
     // ---------------------------
     private val _trainingActive = MutableLiveData(false)
     val trainingActive: LiveData<Boolean> = _trainingActive
@@ -47,26 +63,26 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         loadSchede()
+        loadTrainings()
+        loadGoals()
         loadTrainingState()
     }
 
-    /** Loads schede from repository or keeps current fallback list */
+    // ---------------------------
+    // Schede
+    // ---------------------------
     fun loadSchede() {
         try {
             val repo = AppRepository.getInstance(getApplication())
             val list = repo.getSchede()
             _schede.value = list
             Log.d("APP_VM", "loadSchede => loaded ${list.size} items from repository.")
-            list.forEachIndexed { idx, c ->
-                Log.d("APP_VM", "  [$idx] name='${c.name}', exercises='${c.exercises?.take(60)}'")
-            }
         } catch (e: Exception) {
             Log.e("APP_VM", "loadSchede => error loading schede", e)
             _schede.value = _schede.value ?: emptyList()
         }
     }
 
-    /** Adds a new scheda */
     fun addScheda(scheda: Card) {
         try {
             val repo = AppRepository.getInstance(getApplication())
@@ -81,7 +97,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /** Updates a scheda at a specific index */
     fun updateScheda(index: Int, scheda: Card) {
         try {
             val repo = AppRepository.getInstance(getApplication())
@@ -98,7 +113,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /** Deletes a scheda at a specific index */
     fun deleteScheda(index: Int) {
         try {
             val repo = AppRepository.getInstance(getApplication())
@@ -115,7 +129,75 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /** Loads persisted training state from SharedPreferences */
+    // ---------------------------
+    // Trainings
+    // ---------------------------
+    fun loadTrainings() {
+        try {
+            val repo = AppRepository.getInstance(getApplication())
+            val list = repo.getTrainings()
+            _trainings.value = list
+            Log.d("APP_VM", "loadTrainings => loaded ${list.size} trainings.")
+        } catch (e: Exception) {
+            Log.e("APP_VM", "loadTrainings => error loading trainings", e)
+            _trainings.value = _trainings.value ?: emptyList()
+        }
+    }
+
+    fun addTraining(training: Training) {
+        try {
+            val repo = AppRepository.getInstance(getApplication())
+            repo.addTraining(training)
+            loadTrainings()
+            Log.d("APP_VM", "addTraining => delegated to repo and reloaded list.")
+        } catch (e: Exception) {
+            val list = _trainings.value?.toMutableList() ?: mutableListOf()
+            list.add(0, training)
+            _trainings.value = list
+            Log.e("APP_VM", "addTraining => fallback in-memory add", e)
+        }
+    }
+
+    // ---------------------------
+    // Goals management
+    // ---------------------------
+    fun loadGoals() {
+        try {
+            val repo = AppRepository.getInstance(getApplication())
+            val map = repo.getGoals()
+            _goals.value = map
+            Log.d("APP_VM", "loadGoals => loaded ${map.size} goals.")
+        } catch (e: Exception) {
+            Log.e("APP_VM", "loadGoals => error loading goals", e)
+            _goals.value = _goals.value ?: emptyMap()
+        }
+    }
+
+    fun saveGoals(map: Map<String, Int>) {
+        try {
+            val repo = AppRepository.getInstance(getApplication())
+            repo.saveGoals(map)
+            _goals.value = map
+            Log.d("APP_VM", "saveGoals => saved ${map.size} goals.")
+        } catch (e: Exception) {
+            Log.e("APP_VM", "saveGoals => error saving goals", e)
+        }
+    }
+
+    fun clearGoals() {
+        try {
+            val repo = AppRepository.getInstance(getApplication())
+            repo.clearGoals()
+            _goals.value = emptyMap()
+            Log.d("APP_VM", "clearGoals => cleared goals.")
+        } catch (e: Exception) {
+            Log.e("APP_VM", "clearGoals => error clearing goals", e)
+        }
+    }
+
+    // ---------------------------
+    // Existing persistent training state helpers
+    // ---------------------------
     fun loadTrainingState() {
         _trainingActive.value = prefs.getBoolean(KEY_TRAINING_ACTIVE, false)
         _trainingPaused.value = prefs.getBoolean(KEY_TRAINING_PAUSED, false)
@@ -125,10 +207,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         Log.d("APP_VM", "loadTrainingState => active=${_trainingActive.value}, paused=${_trainingPaused.value}, label=${_trainingLabel.value}")
     }
 
-    /** Starts a new training session */
     fun startTraining(label: String) {
         val now = System.currentTimeMillis()
-
         prefs.edit()
             .putBoolean(KEY_TRAINING_ACTIVE, true)
             .putString(KEY_TRAINING_LABEL, label)
@@ -146,7 +226,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         Log.d("APP_VM", "startTraining => started label='$label' at $now")
     }
 
-    /** Pauses the current training session */
     fun pauseTraining() {
         val now = System.currentTimeMillis()
         val start = _trainingStart.value ?: now
@@ -163,7 +242,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         Log.d("APP_VM", "pauseTraining => accumulated=$acc")
     }
 
-    /** Resumes the training session */
     fun resumeTraining() {
         val acc = _trainingAccumulated.value ?: 0L
         val newStart = System.currentTimeMillis() - acc
@@ -179,7 +257,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         Log.d("APP_VM", "resumeTraining => newStart=$newStart")
     }
 
-    /** Stops the training and clears persisted data */
     fun stopTraining() {
         prefs.edit()
             .putBoolean(KEY_TRAINING_ACTIVE, false)

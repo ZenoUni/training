@@ -337,7 +337,7 @@ class TrainingActivity : AppCompatActivity() {
     }
 
     // ---------- FINISH TRAINING ----------
-    // When "FINE" is pressed (either set) handle end-of-training flows.
+// When "FINE" is pressed (either set) handle end-of-training flows.
     private fun handleFinishTraining() {
 
         val start = viewModel.trainingStart.value
@@ -351,6 +351,8 @@ class TrainingActivity : AppCompatActivity() {
 
         val underTwentyMinutes = elapsed < TimeUnit.MINUTES.toMillis(20)
         val isCorsa = selectedTrainingLabel == getString(R.string.corsa)
+
+        val todayDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
 
         // ---------- CORSA ----------
         if (isCorsa) {
@@ -372,18 +374,18 @@ class TrainingActivity : AppCompatActivity() {
                         d.dismiss()
                     }
                     .setPositiveButton(getString(R.string.si_salva)) { d, _ ->
+                        // user wants to save -> stop then ask distance and finally save with distance
                         viewModel.stopTraining()
                         resetForm()
                         d.dismiss()
-
-                        // show distance popup
-                        showDistanceInputDialog()
+                        showDistanceInputDialog(elapsed)
                     }
                     .show()
             } else {
+                // training long enough — ask distance then save directly
                 viewModel.stopTraining()
                 resetForm()
-                showDistanceInputDialog()
+                showDistanceInputDialog(elapsed)
             }
             return
         }
@@ -407,6 +409,18 @@ class TrainingActivity : AppCompatActivity() {
                     d.dismiss()
                 }
                 .setPositiveButton(getString(R.string.si_salva)) { d, _ ->
+                    // Save training via viewModel
+                    val name = selectedTrainingLabel ?: getString(R.string.unknown_training)
+                    val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+                    val training = com.example.training.data.Training(
+                        name = name,
+                        durationMillis = elapsed,
+                        dateFormatted = date,
+                        distanceFormatted = null,
+                        avgKmPerMin = null
+                    )
+                    viewModel.addTraining(training)
+
                     viewModel.stopTraining()
                     resetForm()
 
@@ -421,6 +435,18 @@ class TrainingActivity : AppCompatActivity() {
                 .show()
 
         } else {
+            // long training — save automatically
+            val name = selectedTrainingLabel ?: getString(R.string.unknown_training)
+            val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+            val training = com.example.training.data.Training(
+                name = name,
+                durationMillis = elapsed,
+                dateFormatted = date,
+                distanceFormatted = null,
+                avgKmPerMin = null
+            )
+            viewModel.addTraining(training)
+
             viewModel.stopTraining()
             resetForm()
 
@@ -561,8 +587,8 @@ class TrainingActivity : AppCompatActivity() {
     }
 
     // ---------- DISTANCE INPUT DIALOG ----------
-    // Shows a dialog that asks the user to enter the distance (km) using a numeric decimal input.
-    private fun showDistanceInputDialog() {
+// Shows a dialog that asks the user to enter the distance (km) using a numeric decimal input.
+    private fun showDistanceInputDialog(elapsedMillis: Long) {
 
         val pad = resources.getDimensionPixelSize(R.dimen.content_padding)
 
@@ -618,9 +644,26 @@ class TrainingActivity : AppCompatActivity() {
             val raw = input.text.toString().trim()
 
             // Always save/display with comma
-            val formattedDistance = raw.replace('.', ',')
+            val formattedDistance = raw.replace('.', ',') // stored textual distance with comma
 
-            // TODO: save formattedDistance in next step
+            // For calculation, convert to dot decimal
+            val distanceForCalc = raw.replace(',', '.').toDoubleOrNull() ?: 0.0
+
+            val durationMinutes = elapsedMillis.toDouble() / 60000.0
+            val avgKmPerMin = if (durationMinutes > 0.0) distanceForCalc / durationMinutes else 0.0
+
+            val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+
+            val training = com.example.training.data.Training(
+                name = getString(R.string.corsa),
+                durationMillis = elapsedMillis,
+                dateFormatted = date,
+                distanceFormatted = formattedDistance,
+                avgKmPerMin = avgKmPerMin
+            )
+
+            // save via ViewModel -> repository
+            viewModel.addTraining(training)
 
             dialog.dismiss()
 

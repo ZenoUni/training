@@ -13,6 +13,8 @@ class AppRepository private constructor(private val context: Context) {
 
     private val prefsName = "app_repository_prefs"
     private val schedeKey = "schede_list"
+    private val trainingsKey = "trainings_list"
+    private val goalsKey = "monthly_goals"    // NEW: goals storage
     private val gson = Gson()
 
     companion object {
@@ -30,7 +32,9 @@ class AppRepository private constructor(private val context: Context) {
         }
     }
 
-    /** Returns saved cards list from SharedPreferences. */
+    // -----------------------
+    // Schede (cards)
+    // -----------------------
     fun getSchede(): MutableList<Card> {
         val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
         val json = prefs.getString(schedeKey, null)
@@ -53,7 +57,6 @@ class AppRepository private constructor(private val context: Context) {
         }
     }
 
-    /** Saves the full cards list. */
     fun saveSchede(list: List<Card>) {
         val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
         val json = gson.toJson(list)
@@ -61,7 +64,6 @@ class AppRepository private constructor(private val context: Context) {
         Log.d("APP_REPO", "saveSchede => saved ${list.size} items.")
     }
 
-    /** Adds a new card at the top of the list. */
     fun addScheda(scheda: Card) {
         val current = getSchede()
         current.add(0, scheda)
@@ -69,7 +71,6 @@ class AppRepository private constructor(private val context: Context) {
         Log.d("APP_REPO", "addScheda => added '${scheda.name}'. New size: ${current.size}")
     }
 
-    /** Updates a card at the specified index. */
     fun updateScheda(index: Int, scheda: Card) {
         val current = getSchede()
         if (index in current.indices) {
@@ -81,7 +82,6 @@ class AppRepository private constructor(private val context: Context) {
         }
     }
 
-    /** Deletes a card at the specified index. */
     fun deleteScheda(index: Int) {
         val current = getSchede()
         if (index in current.indices) {
@@ -93,10 +93,85 @@ class AppRepository private constructor(private val context: Context) {
         }
     }
 
-    /** Clears all saved cards. */
     fun clearAllSchede() {
         val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
         prefs.edit().remove(schedeKey).apply()
         Log.d("APP_REPO", "clearAllSchede => cleared saved schede.")
+    }
+
+    // =======================
+    // Trainings storage
+    // =======================
+    fun getTrainings(): MutableList<Training> {
+        val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        val json = prefs.getString(trainingsKey, null)
+        if (json.isNullOrEmpty()) {
+            Log.d("APP_REPO", "getTrainings => no data (null/empty). Returning empty list.")
+            return mutableListOf()
+        }
+        try {
+            val type = object : TypeToken<MutableList<Training>>() {}.type
+            val list: MutableList<Training> = gson.fromJson(json, type) ?: mutableListOf()
+            Log.d("APP_REPO", "getTrainings => loaded ${list.size} items from prefs.")
+            return list
+        } catch (e: Exception) {
+            Log.e("APP_REPO", "getTrainings => error parsing JSON, returning empty list", e)
+            return mutableListOf()
+        }
+    }
+
+    fun saveTrainings(list: List<Training>) {
+        val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        val json = gson.toJson(list)
+        prefs.edit().putString(trainingsKey, json).apply()
+        Log.d("APP_REPO", "saveTrainings => saved ${list.size} trainings.")
+    }
+
+    fun addTraining(training: Training) {
+        val current = getTrainings()
+        current.add(0, training)
+        saveTrainings(current)
+        Log.d("APP_REPO", "addTraining => added '${training.name}' on ${training.dateFormatted}. New size: ${current.size}")
+    }
+
+    fun clearAllTrainings() {
+        val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        prefs.edit().remove(trainingsKey).apply()
+        Log.d("APP_REPO", "clearAllTrainings => cleared saved trainings.")
+    }
+
+    // =======================
+    // Goals storage (monthly)
+    // stored as Map<String, Int> serialized with Gson
+    // =======================
+    fun getGoals(): MutableMap<String, Int> {
+        val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        val json = prefs.getString(goalsKey, null)
+        if (json.isNullOrEmpty()) {
+            Log.d("APP_REPO", "getGoals => no goals saved, returning empty map.")
+            return mutableMapOf()
+        }
+        return try {
+            val type = object : TypeToken<MutableMap<String, Int>>() {}.type
+            val map: MutableMap<String, Int> = gson.fromJson(json, type) ?: mutableMapOf()
+            Log.d("APP_REPO", "getGoals => loaded ${map.size} goals.")
+            map
+        } catch (e: Exception) {
+            Log.e("APP_REPO", "getGoals => error parsing JSON, returning empty map", e)
+            mutableMapOf()
+        }
+    }
+
+    fun saveGoals(map: Map<String, Int>) {
+        val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        val json = gson.toJson(map)
+        prefs.edit().putString(goalsKey, json).apply()
+        Log.d("APP_REPO", "saveGoals => saved ${map.size} goals.")
+    }
+
+    fun clearGoals() {
+        val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        prefs.edit().remove(goalsKey).apply()
+        Log.d("APP_REPO", "clearGoals => removed saved goals.")
     }
 }

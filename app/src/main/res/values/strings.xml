@@ -37,7 +37,11 @@
     <string name="run_training_saved">Allenamento e distanza salvati con successo</string>
 
 
+    <!-- training / progress -->
+    <string name="unknown_training">Allenamento</string>
 
+    <!-- progress empty -->
+    <string name="no_trainings_yet">Non ci sono ancora allenamenti salvati</string>
 
     <!-- Cards -->
     <string name="le_tue_schede">Le Tue Schede</string>
@@ -74,5 +78,17 @@
     <string name="confirm_save_modifiche">Sicuro di voler salvare le modifiche?</string>
     <string name="modifiche_salvate">Modifiche salvate</string>
     <string name="ok">Ok</string>
+
+    <!-- Goals -->
+    <string name="goals_title">Imposta i Tuoi Obiettivi Mensili</string>
+    <string name="goals_valid_until">Gli obiettivi saranno validi fino al %1$s</string>
+    <string name="goals_valid_until_placeholder">Gli obiettivi saranno validi fino al ...</string>
+    <string name="scheda_nuova_flag">scheda aggiunta recentemente</string>
+    <string name="set_goals">Imposta Obiettivi</string>
+    <string name="modify_goals">Modifica Obiettivi</string>
+    <string name="save">Salva</string>
+    <string name="reset_counters">Resetta Contatori</string>
+    <string name="goals_saved_toast">Obiettivi salvati</string>
+    <string name="goals_reset_toast">Contatori resettati</string>
 
 </resources>
